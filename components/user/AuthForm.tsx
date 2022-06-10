@@ -22,10 +22,10 @@ const AuthForm: React.FC<AuthFormProps> = () => {
 
   const formik = useFormik({
     initialValues: {
-      // email: 'test2@test.com',
-      // password: 'test1234',
-      email: 'admin@sadaquest.com',
-      password: 'admin1234',
+      email: 'test2@test.com',
+      password: 'test1234',
+      // email: 'admin@sadaquest.com',
+      // password: 'admin1234',
       submit: null,
     },
     validationSchema: Yup.object({

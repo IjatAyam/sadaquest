@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Title, useTheme } from 'react-native-paper';
-import ApprovalItem from './ApprovalItem';
+import ApprovedItem from './ApprovedItem';
 import axios from 'axios';
 import { FIREBASE_REALTIME_DATABASE_ENDPOINT } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerParamList } from '../../navigations/DrawerNavigator';
 import { Donate } from '../../types/donate';
+import { useAppSelector } from '../../lib/hooks';
 
-interface ApprovalListProps {}
+interface ApprovedListProps {}
 
-const ApprovalList: React.FC<ApprovalListProps> = () => {
+const ApprovedList: React.FC<ApprovedListProps> = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const [donates, setDonates] = useState<Donate[]>();
 
@@ -25,15 +27,15 @@ const ApprovalList: React.FC<ApprovalListProps> = () => {
     const fetchDonates = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`${FIREBASE_REALTIME_DATABASE_ENDPOINT}/donates.json`);
+        const { data } = await axios.get(`${FIREBASE_REALTIME_DATABASE_ENDPOINT}/approved/${user!.id}.json`);
 
         const fetchedDonates: Donate[] = [];
 
         for (const key in data) {
-          fetchedDonates.push({
+          fetchedDonates.unshift({
             id: key,
-            userEmail: data[key].userEmail,
-            userId: data[key].userId,
+            userEmail: user!.email,
+            userId: user!.id,
             masjidId: data[key].masjidId,
             masjid: data[key].masjid,
             donationType: data[key].donationType,
@@ -60,10 +62,6 @@ const ApprovalList: React.FC<ApprovalListProps> = () => {
     };
   }, [navigation]);
 
-  const handleDoneApproval = (donateId: string) => {
-    setDonates((prevState) => prevState?.filter((donate) => donate.id !== donateId));
-  };
-
   if (loading || !donates) {
     return (
       <View style={styles.loadingContainer}>
@@ -75,7 +73,7 @@ const ApprovalList: React.FC<ApprovalListProps> = () => {
   if (donates.length === 0) {
     return (
       <View style={styles.loadingContainer}>
-        <Title>No donates to approve yet</Title>
+        <Title>No donates approved yet</Title>
       </View>
     );
   }
@@ -85,7 +83,7 @@ const ApprovalList: React.FC<ApprovalListProps> = () => {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       data={donates}
-      renderItem={({ item: donate }) => <ApprovalItem donate={donate} onDone={() => handleDoneApproval(donate.id)} />}
+      renderItem={({ item: donate }) => <ApprovedItem donate={donate} />}
     />
   );
 };
@@ -107,4 +105,4 @@ const makeStyles = (colors: ReactNativePaper.ThemeColors) =>
     },
   });
 
-export default ApprovalList;
+export default ApprovedList;

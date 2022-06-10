@@ -5,10 +5,12 @@ import HomeNavigator from './HomeNavigator';
 import DonateNavigator from './DonateNavigator';
 import AuthNavigator from './AuthNavigator';
 import ApprovalNavigator from './ApprovalNavigator';
+import ApprovedNavigator from './ApprovedNavigator';
 
 export type DrawerParamList = {
   HomeNav: undefined;
   DonateNav: undefined;
+  ApprovedNav: undefined;
   ApprovalNav: undefined;
   AuthNav: undefined;
 };
@@ -22,6 +24,7 @@ const DrawerNavigator: React.FC<DrawerNavigatorProps> = () => {
     <Drawer.Navigator initialRouteName="HomeNav" drawerContent={DrawerContent} screenOptions={{ headerShown: false }}>
       <Drawer.Screen name="HomeNav" component={HomeNavigator} />
       <Drawer.Screen name="DonateNav" component={DonateNavigator} />
+      <Drawer.Screen name="ApprovedNav" component={ApprovedNavigator} />
       <Drawer.Screen name="ApprovalNav" component={ApprovalNavigator} />
       <Drawer.Screen name="AuthNav" component={AuthNavigator} />
     </Drawer.Navigator>

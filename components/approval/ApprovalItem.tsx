@@ -4,21 +4,7 @@ import { Button, Card, Paragraph, Text, Title, useTheme } from 'react-native-pap
 import { Donate } from '../../types/donate';
 import axios from 'axios';
 import { FIREBASE_REALTIME_DATABASE_ENDPOINT } from '@env';
-
-const donationTypeList = [
-  {
-    label: 'Meals and/or Drinks',
-    value: 0,
-  },
-  {
-    label: 'Groceries',
-    value: 1,
-  },
-  {
-    label: 'Clothing Items',
-    value: 2,
-  },
-];
+import donationTypeList from '../../constants/donationTypesList';
 
 interface ApprovalItemProps {
   donate: Donate;

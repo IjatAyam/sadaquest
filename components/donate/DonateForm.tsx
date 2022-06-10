@@ -13,31 +13,17 @@ import { useNavigation } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerParamList } from '../../navigations/DrawerNavigator';
 import { useAppSelector } from '../../lib/hooks';
-
-const donationTypeList = [
-  {
-    label: 'Meals and/or Drinks',
-    value: 0,
-  },
-  {
-    label: 'Groceries',
-    value: 1,
-  },
-  {
-    label: 'Clothing Items',
-    value: 2,
-  },
-];
+import donationTypeList from '../../constants/donationTypesList';
 
 interface DonateFormProps {}
 
 const DonateForm: React.FC<DonateFormProps> = () => {
-  const [showVenueDropDown, setShowVenueDropDown] = useState(false);
+  const [showMasjidDropDown, setShowMasjidDropDown] = useState(false);
   const [showDonationTypeDropDown, setShowDonationTypeDropDown] = useState(false);
   const [openDate, setOpenDate] = useState(false);
   const [openTime, setOpenTime] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [masjids, setMasjids] = useState<Masjid[] | undefined>();
+  const [masjids, setMasjids] = useState<Masjid[]>();
 
   const { user } = useAppSelector((state) => state.auth);
 
@@ -58,7 +44,7 @@ const DonateForm: React.FC<DonateFormProps> = () => {
       submit: null,
     },
     validationSchema: Yup.object({
-      masjid: Yup.string().required('Venue is required'),
+      masjid: Yup.string().required('Masjid is required'),
       donationType: Yup.string().required('Type of Donation is required'),
       details: Yup.string().required('Details is required'),
       quantity: Yup.number().min(1, 'Must be greater than or equal to 1').required('Quantity is required'),
@@ -139,10 +125,10 @@ const DonateForm: React.FC<DonateFormProps> = () => {
     };
   }, [navigation]);
 
-  const handleShowVenueDropDown = () => {
+  const handleShowMasjidDropDown = () => {
     formik.setTouched({ ...formik.touched, masjid: true });
 
-    setShowVenueDropDown(true);
+    setShowMasjidDropDown(true);
   };
 
   const handleShowDonationTypeDropDown = () => {
@@ -208,15 +194,15 @@ const DonateForm: React.FC<DonateFormProps> = () => {
       <View style={styles.inputContainerStyle}>
         <DropDown
           mode="outlined"
-          label="Venue"
-          visible={showVenueDropDown}
+          label="Masjid"
+          visible={showMasjidDropDown}
           value={formik.values.masjid}
           setValue={(value) => {
             formik.setFieldValue('masjid', value);
           }}
           list={masjids.map((masjid) => ({ label: masjid.name, value: masjid.id }))}
-          showDropDown={handleShowVenueDropDown}
-          onDismiss={() => setShowVenueDropDown(false)}
+          showDropDown={handleShowMasjidDropDown}
+          onDismiss={() => setShowMasjidDropDown(false)}
         />
         {formik.touched.masjid && formik.errors.masjid && <HelperText type="error">{formik.errors.masjid}</HelperText>}
       </View>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { screenOptions } from '../components/navigations/stack/ScreenOptions';
+import HomeScreen from '../screens/home/HomeScreen';
 
 export type HomeParamList = {
   Home: undefined;
@@ -9,20 +9,12 @@ export type HomeParamList = {
 
 const Stack = createStackNavigator<HomeParamList>();
 
-const TestComp: React.FC = () => {
-  return (
-    <View>
-      <Text>test</Text>
-    </View>
-  );
-};
-
 interface HomeNavigatorProps {}
 
 const HomeNavigator: React.FC<HomeNavigatorProps> = () => {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen name="Home" component={TestComp} options={{ title: 'Homepage' }} />
+      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Upcoming Event' }} />
     </Stack.Navigator>
   );
 };

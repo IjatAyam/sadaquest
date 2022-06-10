@@ -30,10 +30,10 @@ const drawerItemsData: ItemData[] = [
     loginRequired: true,
   },
   {
-    navIndex: -1,
-    label: 'Inbox',
-    icon: 'message-text',
-    nav: 'HomeNav',
+    navIndex: 2,
+    label: 'Approved Donates',
+    icon: 'playlist-check',
+    nav: 'ApprovedNav',
     loginRequired: true,
   },
   {
@@ -100,7 +100,7 @@ const DrawerContent: React.FC<DrawerContentProps> = (props) => {
         <Drawer.Item
           label="Approval"
           icon="format-list-checks"
-          active={selectedNavIndex === 2}
+          active={selectedNavIndex === 3}
           onPress={handleSelectApproval}
         />
       )}
