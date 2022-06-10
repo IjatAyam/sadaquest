@@ -17,12 +17,12 @@ const initialState: AuthState = {
   isLoading: false,
 };
 
-interface LoginData {
+interface AuthData {
   email: string;
   password: string;
 }
 
-export const login = createAsyncThunk<User, LoginData>('auth/login', async (loginData) => {
+export const login = createAsyncThunk<User, AuthData>('auth/login', async (loginData) => {
   try {
     const { data } = await axios.post(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_WEB_API_KEY}`,
@@ -43,9 +43,38 @@ export const login = createAsyncThunk<User, LoginData>('auth/login', async (logi
 
     if (message === 'EMAIL_NOT_FOUND') {
       throw new Error('Email not found');
-    } else {
+    } else if (message === 'INVALID_PASSWORD') {
       throw new Error('Invalid password');
     }
+
+    throw new Error('Something went wrong. Please try again');
+  }
+});
+
+export const signup = createAsyncThunk<User, AuthData>('auth/signup', async (loginData) => {
+  try {
+    const { data } = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_WEB_API_KEY}`,
+      {
+        email: loginData.email,
+        password: loginData.password,
+        returnSecureToken: true,
+      }
+    );
+
+    return {
+      token: data.idToken,
+      id: data.localId,
+      email: data.email,
+    };
+  } catch (err) {
+    const message: 'EMAIL_EXISTS' = err.response.data.error.message;
+
+    if (message === 'EMAIL_EXISTS') {
+      throw new Error('Email already exists');
+    }
+
+    throw new Error('Something went wrong. Please try again');
   }
 });
 
@@ -66,6 +95,21 @@ export const authSlice = createSlice({
       state.isLoggedIn = true;
     });
     builder.addCase(login.rejected, (state, action) => {
+      state.isLoading = false;
+      state.user = undefined;
+      state.error = action.error.message;
+      state.isLoggedIn = false;
+    });
+    builder.addCase(signup.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(signup.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload;
+      state.error = undefined;
+      state.isLoggedIn = true;
+    });
+    builder.addCase(signup.rejected, (state, action) => {
       state.isLoading = false;
       state.user = undefined;
       state.error = action.error.message;
