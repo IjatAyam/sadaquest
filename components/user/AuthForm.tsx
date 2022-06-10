@@ -8,6 +8,7 @@ import { login, signup } from '../../store/features/auth/authSlice';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerParamList } from '../../navigations/DrawerNavigator';
+import { ADMIN_ID } from '@env';
 
 interface AuthFormProps {}
 
@@ -47,7 +48,7 @@ const AuthForm: React.FC<AuthFormProps> = () => {
   });
 
   useEffect(() => {
-    if (user?.id === 'x5dgQEks8JVO8b5C8LSOfe8Nmdu1') {
+    if (user?.id === ADMIN_ID) {
       navigation.navigate('ApprovalNav');
       formik.resetForm();
       return;

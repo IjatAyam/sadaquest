@@ -5,6 +5,7 @@ import { Drawer, useTheme } from 'react-native-paper';
 import DrawerHeader from './DrawerHeader';
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks';
 import { authActions } from '../../../store/features/auth/authSlice';
+import { ADMIN_ID } from '@env';
 
 interface ItemData {
   navIndex: number;
@@ -96,7 +97,7 @@ const DrawerContent: React.FC<DrawerContentProps> = (props) => {
           onPress={() => handleSelectNav(item)}
         />
       ))}
-      {isLoggedIn && !!user && user.id === 'x5dgQEks8JVO8b5C8LSOfe8Nmdu1' && (
+      {isLoggedIn && !!user && user.id === ADMIN_ID && (
         <Drawer.Item
           label="Approval"
           icon="format-list-checks"
