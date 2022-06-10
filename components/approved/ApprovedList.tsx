@@ -60,7 +60,7 @@ const ApprovedList: React.FC<ApprovedListProps> = () => {
     return () => {
       unsubscribeFocus();
     };
-  }, [navigation]);
+  }, [navigation, user]);
 
   if (loading || !donates) {
     return (

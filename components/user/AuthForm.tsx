@@ -62,7 +62,7 @@ const AuthForm: React.FC<AuthFormProps> = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Title>Sign In</Title>
+        <Title>{!isSignup ? 'Sign In' : 'Sign Up'}</Title>
       </View>
       <View style={styles.inputContainerStyle}>
         <TextInput
